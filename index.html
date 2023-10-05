@@ -11,7 +11,9 @@
 <body>
 <h1>World Editor</h1>
 <canvas id="myCanvas"></canvas>
+<div id="controls">
 
+</div>
 <script src="js/math/graph.js"></script>
 <script src="js/primitives/point.js"></script>
 <script src="js/primitives/segment.js"></script>
@@ -22,22 +24,22 @@
 
     const ctx = myCanvas.getContext("2d");
 
-    const p1 = new Point(200,200);
-    const p2 = new Point(500,200);
-    const p3 = new Point(400,400);
-    const p4 = new Point(100,300);
+    const p1 = new Point(200, 200);
+    const p2 = new Point(500, 200);
+    const p3 = new Point(400, 400);
+    const p4 = new Point(100, 300);
     const graph = new Graph([
-        p1,
-        p2,
-        p3,
-        p4
-    ],
-    [
-        new Segment(p1,p2),
-        new Segment(p2,p3),
-        new Segment(p3,p4),
-        new Segment(p4,p1),
-    ]);
+            p1,
+            p2,
+            p3,
+            p4
+        ],
+        [
+            new Segment(p1, p2),
+            new Segment(p2, p3),
+            new Segment(p3, p4),
+            new Segment(p4, p1),
+        ]);
     graph.draw(ctx);
 </script>
 </body>
