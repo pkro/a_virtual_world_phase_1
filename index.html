@@ -16,7 +16,9 @@
 </div>
 <script src="js/math/graph.js"></script>
 <script src="js/primitives/point.js"></script>
+<script src="js/math/utils.js"></script>
 <script src="js/primitives/segment.js"></script>
+<script src="js/grapheditor.js"></script>
 <script>
     const myCanvas = document.getElementById('myCanvas');
     myCanvas.width = 600;
@@ -40,7 +42,17 @@
             new Segment(p3, p4),
             new Segment(p4, p1),
         ]);
-    graph.draw(ctx);
+
+
+    const graphEditor = new GraphEditor(myCanvas, graph);
+
+    animate();
+
+    function animate() {
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        graphEditor.display();
+        requestAnimationFrame(animate);
+    }
 </script>
 </body>
 </html>
