@@ -1,4 +1,4 @@
-type DrawOptions = {size: number, color: string, outline: boolean, fill: boolean};
+type PointDrawOptions = {size: number, color: string, outline: boolean, fill: boolean};
 
 class Point {
     constructor(public x: number, public y: number) {
@@ -10,9 +10,9 @@ class Point {
 
 
 
-    draw(ctx: CanvasRenderingContext2D, options: Partial<DrawOptions> = {}) {
-        const defaultOptions: DrawOptions = {size: 18, color: "black", outline: false, fill: false};
-        const {size, color, outline, fill} = {...defaultOptions, ...options} as DrawOptions;
+    draw(ctx: CanvasRenderingContext2D, options: Partial<PointDrawOptions> = {}) {
+        const defaultOptions: PointDrawOptions = {size: 18, color: "black", outline: false, fill: false};
+        const {size, color, outline, fill} = {...defaultOptions, ...options} as PointDrawOptions;
         const rad = size/2;
         ctx.beginPath();
         ctx.fillStyle = color;

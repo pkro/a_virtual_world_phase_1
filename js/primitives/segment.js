@@ -10,12 +10,17 @@ class Segment {
     includes(point) {
         return this.p1.equals(point) || this.p2.equals(point);
     }
-    draw(ctx, width = 2, color = "black") {
+    draw(ctx, options = {}) {
+        const defaultOptions = { width: 2, color: "black", dash: [] };
+        const { width, color, dash } = Object.assign(Object.assign({}, defaultOptions), options);
         ctx.beginPath();
         ctx.lineWidth = width;
         ctx.strokeStyle = color;
+        const oldLineDash = ctx.getLineDash();
+        ctx.setLineDash(dash);
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);
         ctx.stroke();
+        ctx.setLineDash(oldLineDash);
     }
 }
