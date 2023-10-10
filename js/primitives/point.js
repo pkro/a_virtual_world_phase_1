@@ -1,5 +1,7 @@
 "use strict";
 class Point {
+    x;
+    y;
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -9,7 +11,7 @@ class Point {
     }
     draw(ctx, options = {}) {
         const defaultOptions = { size: 18, color: "black", outline: false, fill: false };
-        const { size, color, outline, fill } = Object.assign(Object.assign({}, defaultOptions), options);
+        const { size, color, outline, fill } = { ...defaultOptions, ...options };
         const rad = size / 2;
         ctx.beginPath();
         ctx.fillStyle = color;

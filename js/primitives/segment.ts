@@ -1,9 +1,7 @@
 type SegmentDrawOptions = {width: number, color: string, dash: number[]};
 
 class Segment {
-    constructor(public p1: Point, public p2: Point) {
-
-    }
+    constructor(public p1: Point, public p2: Point) {}
 
     equals(seg: Segment) {
         return this.includes(seg.p1) && this.includes(seg.p2);

@@ -17,3 +17,15 @@ function distance(p1: Point, p2: Point) {
     //return Math.abs(a.x-b.x)**2 + Math.abs(a.y-b.y)**2;
     return Math.hypot(p1.x-p2.x, p1.y-p2.y)
 }
+
+function add(p1: Point, p2: Point) {
+    return new Point(p1.x + p2.x, p1.y + p2.y);
+}
+
+function subtract(p1: Point, p2: Point) {
+    return new Point(p1.x - p2.x, p1.y - p2.y);
+}
+
+function scale(p: Point, scaler: number) {
+    return new Point(p.x * scaler, p.y * scaler);
+}

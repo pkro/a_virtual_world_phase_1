@@ -4,9 +4,13 @@ class GraphEditor {
     private hovered: Point | null = null;
     private dragging = false;
     private mouse: Point | null = null;
+    private canvas: HTMLCanvasElement;
 
-    constructor(public canvas: HTMLCanvasElement, public graph: Graph) {
-        this.ctx = canvas.getContext("2d");
+    constructor(public viewport: Viewport, public graph: Graph) {
+        this.viewport = viewport;
+        this.ctx = viewport.ctx;
+        this.canvas = viewport.canvas;
+
         this.#addEventListeners();
     }
 
@@ -24,8 +28,8 @@ class GraphEditor {
     }
 
     #handleMouseMove(evt: MouseEvent) {
-        this.mouse = new Point(evt.offsetX, evt.offsetY);
-        this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
+        this.mouse = this.viewport.getMouse(evt, true);
+        this.hovered = getNearestPoint(this.mouse, this.graph.points, 10 * this.viewport.zoom);
         if (this.dragging && this.selected) {
             this.selected.x = this.mouse.x;
             this.selected.y = this.mouse.y;
@@ -79,6 +83,12 @@ class GraphEditor {
         }
     }
 
+    dispose() {
+        this.graph.dispose();
+        this.selected = null;
+        this.hovered = null;
+    }
+
     display() {
         this.graph.draw(this.ctx!);
 
@@ -89,7 +99,9 @@ class GraphEditor {
         if (this.selected) {
             // "preview" new segment that would be drawn
             const intent = this.hovered ? this.hovered : this.mouse;
-            new Segment(this.selected, intent!).draw(this.ctx!, {dash: [3,3]});
+            // we don't save the segment anywhere, we just create it to draw it
+            new Segment(this.selected, intent!)
+                .draw(this.ctx!, {dash: [3,3]});
             this.selected.draw(this.ctx!, {outline: true})
         }
     }

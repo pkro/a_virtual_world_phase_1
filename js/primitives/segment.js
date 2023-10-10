@@ -1,5 +1,7 @@
 "use strict";
 class Segment {
+    p1;
+    p2;
     constructor(p1, p2) {
         this.p1 = p1;
         this.p2 = p2;
@@ -12,7 +14,7 @@ class Segment {
     }
     draw(ctx, options = {}) {
         const defaultOptions = { width: 2, color: "black", dash: [] };
-        const { width, color, dash } = Object.assign(Object.assign({}, defaultOptions), options);
+        const { width, color, dash } = { ...defaultOptions, ...options };
         ctx.beginPath();
         ctx.lineWidth = width;
         ctx.strokeStyle = color;

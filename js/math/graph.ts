@@ -1,9 +1,22 @@
 // Note: usually graphs are represented as points and connections, for simplicity in the course they are represented as segments between 2 points.
 
+type SimplePoint = {x: number, y: number};
+type SimpleSegment = {p1: SimplePoint, p2: SimplePoint}
+
 class Graph {
 
     constructor(public points: Point[] = [], public segments: Segment[] = []) {
 
+    }
+
+    static load(info: {points: SimplePoint[], segments: SimpleSegment[]}) {
+        const points = info.points.map(p=> new Point(p.x, p.y));
+        const segments = info.segments.map(s=>new Segment(
+            points.find(p=>p.x === s.p1.x && p.y === s.p1.y)!,
+            points.find(p=>p.x === s.p2.x && p.y === s.p2.y)!,
+        ));
+
+        return new Graph(points, segments);
     }
 
     tryAddPoint(p: Point) {
@@ -60,6 +73,8 @@ class Graph {
         this.segments = [];
         this.points = [];
     }
+
+
 
     draw(ctx: CanvasRenderingContext2D) {
         for (const seg of this.segments) {
