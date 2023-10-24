@@ -1,7 +1,7 @@
 class Polygon {
     private segments: Segment[] = [];
 
-    constructor(private points: Point[]) {
+    constructor(public points: Point[]) {
         for (let i = 1; i <= points.length; i++) {
             this.segments.push(new Segment(
                 points[i - 1],
@@ -39,6 +39,18 @@ class Polygon {
         return this.containsPoint(midpoint);
     }
 
+    intersectsPoly(polygon: Polygon) {
+        for (const seg1 of this.segments) {
+            for(const seg2 of polygon.segments) {
+                if(getIntersection(seg1.p1, seg1.p2, seg2.p1, seg2.p2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     containsPoint(p: Point) {
         // we will check how often a line from an outer point to the point we are checking
         // intersects the segments of the polygon
@@ -54,6 +66,14 @@ class Polygon {
             }
         }
         return intersectionCount % 2 !== 0;
+    }
+
+    distanceToPoint(p: Point) {
+        return Math.min(...this.segments.map(s=>s.distanceToPoint(p)));
+    }
+
+    distanceToPoly(poly: Polygon) {
+        return Math.min(...this.points.map(p=>poly.distanceToPoint(p)));
     }
 
     static multiBreak(polygons: Polygon[]) {
@@ -93,11 +113,14 @@ class Polygon {
         }
     }
 
+
     drawSegments(ctx: CanvasRenderingContext2D, width = 5) {
         for (const seg of this.segments) {
             seg.draw(ctx, {color: getRandomColor(), width})
         }
     }
+
+
 
     draw(ctx: CanvasRenderingContext2D, {stroke = "blue", lineWidth = 2, fill = "rgba(0,0,255,0.3"} = {}) {
         if (this.points.length <= 1) {
@@ -117,6 +140,4 @@ class Polygon {
         ctx.fill();
         ctx.stroke();
     }
-
-
 }

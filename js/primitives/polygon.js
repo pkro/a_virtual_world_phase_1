@@ -35,6 +35,16 @@ class Polygon {
         const midpoint = average(seg.p1, seg.p2);
         return this.containsPoint(midpoint);
     }
+    intersectsPoly(polygon) {
+        for (const seg1 of this.segments) {
+            for (const seg2 of polygon.segments) {
+                if (getIntersection(seg1.p1, seg1.p2, seg2.p1, seg2.p2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     containsPoint(p) {
         // we will check how often a line from an outer point to the point we are checking
         // intersects the segments of the polygon
@@ -50,6 +60,12 @@ class Polygon {
             }
         }
         return intersectionCount % 2 !== 0;
+    }
+    distanceToPoint(p) {
+        return Math.min(...this.segments.map(s => s.distanceToPoint(p)));
+    }
+    distanceToPoly(poly) {
+        return Math.min(...this.points.map(p => poly.distanceToPoint(p)));
     }
     static multiBreak(polygons) {
         for (let i = 0; i < polygons.length - 1; i++) {

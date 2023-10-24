@@ -42,7 +42,7 @@ class Envelope {
     }
 
     // Parameters utility type, which returns a tuple of a function's parameters' types. We then use indexing to get the type of the second parameter (index 1).
-    draw(ctx: CanvasRenderingContext2D, options: Parameters<Polygon['draw']>[1]) {
+    draw(ctx: CanvasRenderingContext2D, options?: Parameters<Polygon['draw']>[1]) {
         // Draw the polygon (envelope) on the canvas context.
         this.poly.draw(ctx, options)
     }

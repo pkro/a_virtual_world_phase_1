@@ -56,6 +56,9 @@ class Graph {
         this.segments = [];
         this.points = [];
     }
+    hash() {
+        return JSON.stringify(this);
+    }
     draw(ctx) {
         for (const seg of this.segments) {
             seg.draw(ctx);

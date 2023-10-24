@@ -74,6 +74,10 @@ class Graph {
         this.points = [];
     }
 
+    hash() {
+        return JSON.stringify(this);
+    }
+
 
 
     draw(ctx: CanvasRenderingContext2D) {
