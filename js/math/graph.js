@@ -12,13 +12,6 @@ class Graph {
         const segments = info.segments.map(s => new Segment(points.find(p => p.x === s.p1.x && p.y === s.p1.y), points.find(p => p.x === s.p2.x && p.y === s.p2.y)));
         return new Graph(points, segments);
     }
-    tryAddPoint(p) {
-        if (!this.containsPoint(p)) {
-            this.addPoint(p);
-            return true;
-        }
-        return false;
-    }
     addPoint(point) {
         this.points.push(point);
     }

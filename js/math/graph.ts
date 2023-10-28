@@ -19,14 +19,6 @@ class Graph {
         return new Graph(points, segments);
     }
 
-    tryAddPoint(p: Point) {
-        if (!this.containsPoint(p)) {
-            this.addPoint(p);
-            return true;
-        }
-        return false;
-    }
-
     addPoint(point: Point) {
         this.points.push(point);
     }
@@ -77,8 +69,6 @@ class Graph {
     hash() {
         return JSON.stringify(this);
     }
-
-
 
     draw(ctx: CanvasRenderingContext2D) {
         for (const seg of this.segments) {

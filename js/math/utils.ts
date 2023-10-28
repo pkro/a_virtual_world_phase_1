@@ -52,6 +52,13 @@ function lerp(A: number, B: number, t: number) {
     return A + (B - A) * t;
 }
 
+function lerp2d(p1: Point, p2: Point, t: number): Point {
+    return new Point(
+        lerp(p1.x, p2.x, t),
+        lerp(p1.y, p2.y, t),
+    )
+}
+
 function getIntersection(A: Point, B: Point, C: Point, D: Point) {
     const tTop = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x);
     const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y);

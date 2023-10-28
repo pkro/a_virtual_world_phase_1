@@ -11,3 +11,8 @@ h1 {
 #myCanvas {
     background-color: #2a5;
 }
+
+#instructions {
+    margin: 16px auto auto auto;
+    color: white;
+}

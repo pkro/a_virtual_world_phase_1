@@ -41,6 +41,9 @@ function angle(p) {
 function lerp(A, B, t) {
     return A + (B - A) * t;
 }
+function lerp2d(p1, p2, t) {
+    return new Point(lerp(p1.x, p2.x, t), lerp(p1.y, p2.y, t));
+}
 function getIntersection(A, B, C, D) {
     const tTop = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x);
     const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y);

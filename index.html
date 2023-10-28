@@ -15,6 +15,7 @@
     <button onclick="dispose()">🗑</button>
     <button onclick="save()">💾</button>
 </div>
+<div id="instructions">left click=set point, right click = delete point or stop road preview, wheel=zoom, middle click and holde = pan</div>
 <script src="js/world.js"></script>
 <script src="js/math/graph.js"></script>
 <script src="js/primitives/point.js"></script>
@@ -23,6 +24,8 @@
 <script src="js/math/utils.js"></script>
 <script src="js/primitives/segment.js"></script>
 <script src="js/viewport.js"></script>
+<script src="js/items/tree.js"></script>
+<script src="js/items/building.js"></script>
 <script src="js/grapheditor.js"></script>
 
 <script>
@@ -53,7 +56,9 @@
             world.generate();
             oldGraphHash = graph.hash();
         }
-        world.draw(ctx);
+
+        const viewPoint = scale(viewport.getOffset(), -1)
+        world.draw(ctx, viewPoint);
         ctx.globalAlpha = 0.3;
         graphEditor.display();
         requestAnimationFrame(animate);
