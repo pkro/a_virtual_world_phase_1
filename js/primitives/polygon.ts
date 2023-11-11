@@ -122,7 +122,7 @@ class Polygon {
 
 
 
-    draw(ctx: CanvasRenderingContext2D, {stroke = "blue", lineWidth = 2, fill = "rgba(0,0,255,0.3"} = {}) {
+    draw(ctx: CanvasRenderingContext2D, {stroke = "blue", lineWidth = 2, fill = "rgba(0,0,255,0.3", join = "miter"} = {}) {
         if (this.points.length <= 1) {
             return;
         }
@@ -130,7 +130,7 @@ class Polygon {
         ctx.fillStyle = fill;
         ctx.strokeStyle = stroke;
         ctx.lineWidth = lineWidth;
-
+        ctx.lineJoin = (join as CanvasLineJoin);
         ctx.moveTo(this.points[0].x, this.points[0].y);
 
         for (let i = 1; i < this.points.length; i++) {

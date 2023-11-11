@@ -2,14 +2,14 @@
 class Tree {
     center;
     size;
-    heightCoefficient;
+    height;
     base;
     constructor(center, size, // size of base of tree
-    heightCoefficient = 0.3 // how "tall" the tree is
+    height = 200 // how "tall" the tree is
     ) {
         this.center = center;
         this.size = size;
-        this.heightCoefficient = heightCoefficient;
+        this.height = height;
         // save base of the tree in case we want to interact with the tree, e.g.
         // check for collisions.
         this.base = this.#generateLevel(center, size);
@@ -28,8 +28,7 @@ class Tree {
         return new Polygon(points);
     }
     draw(ctx, viewPoint) {
-        const diff = subtract(this.center, viewPoint);
-        const top = add(this.center, scale(diff, this.heightCoefficient));
+        const top = getFake3dPoint(this.center, viewPoint, this.height);
         const levelCount = 7;
         for (let level = 0; level < levelCount; level++) {
             const t = level / (levelCount - 1);

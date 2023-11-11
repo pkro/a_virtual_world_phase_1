@@ -2,7 +2,7 @@ class Tree {
     public base: Polygon;
     constructor(public center: Point,
                 public size: number, // size of base of tree
-                private heightCoefficient: number = 0.3 // how "tall" the tree is
+                private height: number = 200 // how "tall" the tree is
     ) {
         // save base of the tree in case we want to interact with the tree, e.g.
         // check for collisions.
@@ -25,9 +25,7 @@ class Tree {
     }
 
     draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
-        const diff = subtract(this.center, viewPoint)
-
-        const top = add(this.center, scale(diff, this.heightCoefficient));
+        const top = getFake3dPoint(this.center, viewPoint, this.height);
 
         const levelCount = 7;
         for (let level = 0; level < levelCount; level++) {
