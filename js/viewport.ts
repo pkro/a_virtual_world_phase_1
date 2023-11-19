@@ -2,8 +2,7 @@ class Viewport {
     public canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D | null;
     public center = new Point(0, 0);
-    public zoom: number = 1;
-    public offset = new Point(0, 0);
+
     public drag = {
         start: new Point(0, 0),
         end: new Point(0, 0),
@@ -11,7 +10,7 @@ class Viewport {
         active: false // are we dragging or not
     }
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, public zoom=2.5, public offset = new Point(0,0)) {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.center = new Point(canvas.width / 2, canvas.height / 2);

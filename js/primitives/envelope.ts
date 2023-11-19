@@ -1,16 +1,24 @@
 class Envelope {
-    public poly;
+    public poly: Polygon;
+    public skeleton: Segment;
 
-    constructor(private skeleton: Segment, // The main line segment around which the envelope is constructed.
-                private width: number,
+    constructor(skeleton: Segment, // The main line segment around which the envelope is constructed.
+                private width = 0,
                 private roundness=1 // The roundness of the envelope's corners. A value of 1 results in a square envelope.
      ) {
-        // Generate the envelope polygon based on the given width and roundness.
-        this.poly = this.#generatePolygon(width, this.roundness);
+
+        this.skeleton = skeleton;
+        this.poly = this.poly = this.#generatePolygon(width, this.roundness);
     }
 
-    #generatePolygon(width: number, roundndess: number) {
-        const {p1, p2} = this.skeleton;
+    static load(info: Envelope) {
+        const env = new Envelope(new Segment(info.skeleton.p1, info.skeleton.p2));
+        env.poly = Polygon.load(info.poly);
+        return env;
+    }
+
+    #generatePolygon(width: number, roundness: number) {
+        const {p1, p2} = this.skeleton!;
 
         // Calculate the radius of the envelope. It is half of the desired width.
         const radius = width/2;
@@ -25,7 +33,7 @@ class Envelope {
         const points = [];
         // Calculate the angular step for generating points. If roundness is 0,
         // treat it the same as 1 to avoid dividing by zero and create a square shape.
-        const step = Math.PI / Math.max(1, roundndess);
+        const step = Math.PI / Math.max(1, roundness);
         const eps = step / 2; // A small epsilon value to ensure the loop covers the entire range.
 
         // Generate points around the first endpoint of the skeleton segment.
@@ -44,6 +52,6 @@ class Envelope {
     // Parameters utility type, which returns a tuple of a function's parameters' types. We then use indexing to get the type of the second parameter (index 1).
     draw(ctx: CanvasRenderingContext2D, options?: Parameters<Polygon['draw']>[1]) {
         // Draw the polygon (envelope) on the canvas context.
-        this.poly.draw(ctx, options)
+        this.poly!.draw(ctx, options)
     }
 }

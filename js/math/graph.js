@@ -46,8 +46,8 @@ class Graph {
         return this.segments.filter(seg => seg.includes(point));
     }
     dispose() {
-        this.segments = [];
-        this.points = [];
+        this.segments.length = 0;
+        this.points.length = 0;
     }
     hash() {
         return JSON.stringify(this);

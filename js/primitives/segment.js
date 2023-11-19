@@ -39,11 +39,12 @@ class Segment {
         return distance(this.p1, this.p2);
     }
     draw(ctx, options = {}) {
-        const defaultOptions = { width: 2, color: "black", dash: [] };
-        const { width, color, dash } = { ...defaultOptions, ...options };
+        const defaultOptions = { width: 2, color: "black", dash: [], cap: "butt" };
+        const { width, color, dash, cap } = { ...defaultOptions, ...options };
         ctx.beginPath();
         ctx.lineWidth = width;
         ctx.strokeStyle = color;
+        ctx.lineCap = cap;
         const oldLineDash = ctx.getLineDash();
         ctx.setLineDash(dash);
         ctx.moveTo(this.p1.x, this.p1.y);

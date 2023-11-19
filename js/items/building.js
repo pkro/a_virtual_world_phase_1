@@ -6,6 +6,9 @@ class Building {
         this.base = base;
         this.height = height;
     }
+    static load(building) {
+        return new Building(Polygon.load(building.base), building.height);
+    }
     draw(ctx, viewPoint) {
         const topPoints = this.base.points.map((p) => getFake3dPoint(p, viewPoint, this.height * 0.6));
         const ceiling = new Polygon(topPoints);

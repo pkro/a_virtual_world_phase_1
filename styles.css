@@ -16,3 +16,47 @@ h1 {
     margin: 16px auto auto auto;
     color: white;
 }
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#controls button {
+    padding: 5px 7px 7px 5px;
+    background-color: white;
+    outline: none;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-shadow: 1px 1px black;
+}
+
+#controls button:hover {
+    background-color: bisque;
+}
+
+button, .file-input-label {
+    display: inline-block;
+    padding: 5px 7px 7px 5px;
+    background-color: white;
+    outline: none;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-shadow: 1px 1px black;
+}
+
+.file-input-label:hover {
+    background-color: bisque;
+
+}
+
+input[type="file"] {
+    display: none;
+}
+
+

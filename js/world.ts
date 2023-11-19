@@ -1,22 +1,51 @@
+
 class World {
     private envelopes: Envelope[] = [];
     private roadBorders: Segment[] = []
     private buildings: Building[] = [];
     private trees: Tree[] = [];
+    public laneGuides: Segment[] = [];
+    public markings: Marking[] = [];
+    public zoom: number = 2.5; // used to save view state, no other use in this class
+    public offset: Point = new Point(0,0); // used to save state
 
-    constructor(private graph: Graph,
-                private roadWidth = 100,
-                private roadRoundness = 10,
-                private buildingWidth = 150,
-                private buildingMinLength = 150,
-                private spacing = 50,
-                private treeSize = 160) {
+    constructor(public graph: Graph,
+                public roadWidth = 100,
+                public roadRoundness = 10,
+                public buildingWidth = 150,
+                public buildingMinLength = 150,
+                public spacing = 50,
+                public treeSize = 160 ) {
 
         this.generate();
     }
 
+    static load(info: World) {
+        const world = new World(new Graph());
+        world.graph = Graph.load(info.graph);
+        world.roadWidth = info.roadWidth;
+        world.roadRoundness = info.roadRoundness;
+        world.buildingWidth = info.buildingWidth;
+        world.buildingMinLength = info.buildingMinLength;
+        world.spacing = info.spacing;
+        world.treeSize = info.treeSize;
+
+
+        world.envelopes = info.envelopes.map((e) => Envelope.load(e));
+        world.roadBorders = info.roadBorders.map(b=>new Segment(b.p1, b.p2));
+        world.buildings = info.buildings.map(b => Building.load(b));
+        world.trees = info.trees.map(t=>new Tree(t.center, t.size, t.height));
+        world.laneGuides = info.laneGuides.map(g => new Segment(g.p1, g.p2));
+
+        world.markings = info.markings.map(m => Marking.load(m));
+        world.zoom = info.zoom;
+        world.offset = info.offset;
+
+        return world;
+    }
+
     generate() {
-        this.envelopes = [];
+        this.envelopes.length = 0;
         for (const seg of this.graph.segments) {
             this.envelopes.push(new Envelope(seg, this.roadWidth, this.roadRoundness));
         }
@@ -25,7 +54,24 @@ class World {
         this.buildings = this.#generateBuildings();
 
         this.trees = this.#generateTrees();
+        this.laneGuides.length = 0;
+        this.laneGuides.push(...this.#generateLaneGuides());
+    }
 
+    #generateLaneGuides() {
+        const tmpEnvelopes = [];
+        for (const seg of this.graph.segments) {
+            tmpEnvelopes.push(
+                new Envelope(
+                    seg,
+                    this.roadWidth  / 2,
+                    this.roadRoundness
+                )
+            )
+        }
+
+        const segments = Polygon.union(tmpEnvelopes.map((e)=>e.poly));
+        return segments;
     }
 
     #generateTrees(count = 10) {
@@ -48,7 +94,9 @@ class World {
         if(this.buildings.length ===0  && this.envelopes.length === 0) {
             return trees;
         }
+
         let tryCount = 0;
+
         while (tryCount < 100) {
             const p = new Point(
                 lerp(left, right, Math.random()),
@@ -161,6 +209,10 @@ class World {
         for (const env of this.envelopes) {
             env.draw(ctx, {fill: "#BBB", stroke: "#BBB", lineWidth: 15}); // linewidth adds a little gray margin
         }
+
+        for (const marking of this.markings) {
+            marking.draw(ctx);
+        }
         // draw dashed midlines
         for (const seg of this.graph.segments) {
             seg.draw(ctx, {color: "white", width: 4, dash: [10, 10]});
@@ -180,5 +232,6 @@ class World {
         for (const item of items) {
             item.draw(ctx, viewPoint);
         }
+
     }
 }

@@ -1,4 +1,4 @@
-type SegmentDrawOptions = {width: number, color: string, dash: number[]};
+type SegmentDrawOptions = {width: number, color: string, dash: number[], cap: CanvasLineCap};
 
 class Segment {
     constructor(public p1: Point, public p2: Point) {}
@@ -42,13 +42,14 @@ class Segment {
     }
 
     draw(ctx: CanvasRenderingContext2D, options: Partial<SegmentDrawOptions> = {}) {
-        const defaultOptions:SegmentDrawOptions = {width: 2, color: "black", dash: []};
+        const defaultOptions:SegmentDrawOptions = {width: 2, color: "black", dash: [], cap: "butt"};
 
-        const {width, color, dash} = {...defaultOptions, ...options};
+        const {width, color, dash, cap} = {...defaultOptions, ...options};
 
         ctx.beginPath();
         ctx.lineWidth = width;
         ctx.strokeStyle = color;
+        ctx.lineCap = cap;
         const oldLineDash = ctx.getLineDash();
         ctx.setLineDash(dash);
         ctx.moveTo(this.p1.x, this.p1.y);

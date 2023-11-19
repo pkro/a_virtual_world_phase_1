@@ -62,8 +62,8 @@ class Graph {
     }
 
     dispose() {
-        this.segments = [];
-        this.points = [];
+        this.segments.length= 0;
+        this.points.length= 0;
     }
 
     hash() {

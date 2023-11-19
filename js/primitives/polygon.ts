@@ -1,5 +1,5 @@
 class Polygon {
-    private segments: Segment[] = [];
+    public segments: Segment[] = [];
 
     constructor(public points: Point[]) {
         for (let i = 1; i <= points.length; i++) {
@@ -8,6 +8,12 @@ class Polygon {
                 points[i % points.length] // connects 2 points and connects the last point to the first
             ));
         }
+    }
+
+    static load(poly: Polygon) {
+        return new Polygon(
+            poly.points.map(i => new Point(i.x, i.y))
+        );
     }
 
     static union(polys: Polygon[]) {

@@ -8,13 +8,17 @@ class GraphEditor {
     dragging = false;
     mouse = null;
     canvas;
+    listeners = []; // let's be pragmatic with the listener type
     constructor(viewport, graph) {
         this.viewport = viewport;
         this.graph = graph;
         this.viewport = viewport;
         this.ctx = viewport.ctx;
         this.canvas = viewport.canvas;
-        this.#addEventListeners();
+    }
+    #addEventListener(event, listener) {
+        this.listeners.push({ event, listener });
+        this.canvas.addEventListener(event, listener);
     }
     #addEventListeners() {
         // "this.#handleMouseDown" refers to the private method in the GraphEditor class to handle mouse-down events.
@@ -22,10 +26,14 @@ class GraphEditor {
         // Without .bind(this), "this" inside #handleMouseDown would not refer to the GraphEditor instance,
         // but to the element that the event was fired on, which would be this.canvas. This would make it difficult to access
         // other properties and methods of the GraphEditor instance within #handleMouseDown.
-        this.canvas.addEventListener("mousemove", this.#handleMouseMove.bind(this));
-        this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
-        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
-        this.canvas.addEventListener("mouseup", () => this.dragging = false);
+        this.#addEventListener("mousemove", this.#handleMouseMove.bind(this));
+        this.#addEventListener("mousedown", this.#handleMouseDown.bind(this));
+        this.#addEventListener("contextmenu", (evt) => evt.preventDefault());
+        this.#addEventListener("mouseup", () => this.dragging = false);
+    }
+    #removeEventListeners() {
+        this.listeners.forEach(listener => this.canvas.removeEventListener(listener.event, listener.listener));
+        this.listeners.length = 0;
     }
     #handleMouseMove(evt) {
         this.mouse = this.viewport.getMouse(evt, true);
@@ -94,5 +102,13 @@ class GraphEditor {
                 .draw(this.ctx, { dash: [3, 3] });
             this.selected.draw(this.ctx, { outline: true });
         }
+    }
+    enable() {
+        this.#addEventListeners();
+    }
+    disable() {
+        this.#removeEventListeners();
+        this.selected = null;
+        this.hovered = null;
     }
 }

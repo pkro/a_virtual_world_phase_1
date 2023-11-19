@@ -2,6 +2,10 @@ class Building {
     constructor(public base: Polygon, private height=200) {
     }
 
+    static load(building: Building) {
+        return new Building(Polygon.load(building.base), building.height);
+    }
+
     draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
         const topPoints = this.base.points.map((p) =>
             getFake3dPoint(p, viewPoint, this.height * 0.6)

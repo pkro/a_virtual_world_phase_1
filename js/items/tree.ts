@@ -2,7 +2,7 @@ class Tree {
     public base: Polygon;
     constructor(public center: Point,
                 public size: number, // size of base of tree
-                private height: number = 200 // how "tall" the tree is
+                public height: number = 200 // how "tall" the tree is
     ) {
         // save base of the tree in case we want to interact with the tree, e.g.
         // check for collisions.

@@ -5,13 +5,18 @@ class GraphEditor {
     private dragging = false;
     private mouse: Point | null = null;
     private canvas: HTMLCanvasElement;
+    private listeners: Array<{ event: keyof HTMLElementEventMap, listener: any }> = []; // let's be pragmatic with the listener type
+
 
     constructor(public viewport: Viewport, public graph: Graph) {
         this.viewport = viewport;
         this.ctx = viewport.ctx;
         this.canvas = viewport.canvas;
+    }
 
-        this.#addEventListeners();
+    #addEventListener(event: keyof HTMLElementEventMap, listener: any) {
+        this.listeners.push({event, listener});
+        this.canvas.addEventListener(event, listener as any);
     }
 
     #addEventListeners() {
@@ -20,12 +25,18 @@ class GraphEditor {
         // Without .bind(this), "this" inside #handleMouseDown would not refer to the GraphEditor instance,
         // but to the element that the event was fired on, which would be this.canvas. This would make it difficult to access
         // other properties and methods of the GraphEditor instance within #handleMouseDown.
-        this.canvas.addEventListener("mousemove",  this.#handleMouseMove.bind(this));
-        this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
+        this.#addEventListener("mousemove",  this.#handleMouseMove.bind(this));
+        this.#addEventListener("mousedown", this.#handleMouseDown.bind(this));
 
-        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
-        this.canvas.addEventListener("mouseup", () => this.dragging = false);
+        this.#addEventListener("contextmenu", (evt: MouseEvent) => evt.preventDefault());
+        this.#addEventListener("mouseup", () => this.dragging = false);
     }
+
+    #removeEventListeners() {
+        this.listeners.forEach(listener=>this.canvas.removeEventListener(listener.event, listener.listener));
+        this.listeners.length=0;
+    }
+
 
     #handleMouseMove(evt: MouseEvent) {
         this.mouse = this.viewport.getMouse(evt, true);
@@ -68,6 +79,7 @@ class GraphEditor {
         }
     }
 
+
     #selectPoint(point: Point) {
         if (this.selected) {
             this.graph.tryAddSegment(new Segment(this.selected, point));
@@ -104,5 +116,15 @@ class GraphEditor {
                 .draw(this.ctx!, {dash: [3,3]});
             this.selected.draw(this.ctx!, {outline: true})
         }
+    }
+
+    enable() {
+        this.#addEventListeners();
+    }
+
+    disable() {
+        this.#removeEventListeners();
+        this.selected = null;
+        this.hovered = null;
     }
 }

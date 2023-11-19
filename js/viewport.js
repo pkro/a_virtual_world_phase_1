@@ -1,17 +1,19 @@
 "use strict";
 class Viewport {
+    zoom;
+    offset;
     canvas;
     ctx;
     center = new Point(0, 0);
-    zoom = 1;
-    offset = new Point(0, 0);
     drag = {
         start: new Point(0, 0),
         end: new Point(0, 0),
         offset: new Point(0, 0),
         active: false // are we dragging or not
     };
-    constructor(canvas) {
+    constructor(canvas, zoom = 2.5, offset = new Point(0, 0)) {
+        this.zoom = zoom;
+        this.offset = offset;
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.center = new Point(canvas.width / 2, canvas.height / 2);
